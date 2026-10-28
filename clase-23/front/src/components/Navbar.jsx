@@ -1,0 +1,30 @@
+import { Activity } from 'react'
+import { Link } from 'react-router'
+
+export default function Navbar() {
+    const usuario = JSON.parse(localStorage.getItem("usuario"))
+    return (
+        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <div className="container-fluid">
+                <a className="navbar-brand" href="#">Navbar</a>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div className="navbar-nav">
+                        <Link className="nav-link" to="/">Home</Link>
+                        <Link className="nav-link" to="/contact">Contacto</Link>
+                        <Activity mode={usuario ? "visible" : "hidden"} >
+                            <Link className="nav-link" to="/productos">Productos</Link>
+                            <Link className="nav-link" to="/salir">Logout</Link>
+                        </Activity>
+                        <Activity mode={!usuario ? "visible" : "hidden"} >
+                            <Link className="nav-link" to="/login">Login</Link>
+                            <Link className="nav-link" to="/register">Registro</Link>
+                        </Activity>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    )
+}
