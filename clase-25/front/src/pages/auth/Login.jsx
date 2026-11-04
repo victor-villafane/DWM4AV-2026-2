@@ -3,6 +3,7 @@ import { useApiAuth } from '../../services/auth.service'
 import Alert from '../../components/Alert'
 import { useLogin } from '../../context/session.context'
 import { useState } from 'react'
+import GoogleAuth from '../../components/GoogleAuth'
 
 export default function Login() {
 
@@ -45,6 +46,7 @@ export default function Login() {
                         <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
+                    <GoogleAuth />
                 </form>
             </div>
         </div>

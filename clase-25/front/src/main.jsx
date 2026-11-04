@@ -20,6 +20,7 @@ const NuevaPelicula = lazy(() => import('./pages/crud/NuevaPelicula.jsx'))
 const EditarPelicula = lazy(() => import('./pages/crud/EditarPelicula.jsx'))
 const EliminarPelicula = lazy(() => import('./pages/crud/EliminarPelicula.jsx'))
 const Logout = lazy(() => import('./pages/auth/Logout.jsx'))
+const CallbackAuth = lazy(() => import('./pages/auth/CallbackAuth.jsx'))
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
         element: <Suspense fallback={<div>Cargando...</div>} >
           <ProtectedRoute element={<Usuarios />} rol={["superadmin"]} />
         </Suspense>
+      },
+      {
+        path: "/callback",
+        element: <CallbackAuth />
       }
     ]
   },

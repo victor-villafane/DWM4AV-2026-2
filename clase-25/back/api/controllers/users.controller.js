@@ -69,3 +69,7 @@ export async function reset(req, res) {
         res.status(500).json({ message: "Usuario no encontrado" })
     }
 }
+
+export async function socialLogin(req, res){
+    console.log(req.usuario)
+}
