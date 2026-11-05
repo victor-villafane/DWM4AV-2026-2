@@ -48,12 +48,12 @@ export default function Login() {
                         <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
-                    <div className='mt-3' >
-                        <GoogleAuth />
-                        <GithubAuth />
-                        <NotionAuth />
-                    </div>
                 </form>
+                <div className='mt-3' >
+                    <GoogleAuth />
+                    <GithubAuth />
+                    <NotionAuth />
+                </div>
             </div>
         </div>
     )
