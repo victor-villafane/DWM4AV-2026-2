@@ -6,7 +6,7 @@ import cors from "cors"
 import dotenv from "dotenv"
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
-import { getPeliculas } from "./services/movies.service.js"
+import { getPeliculas, getPeliculaByTitle, guardarPelicula, eliminarPeliculaLogico, eliminarPeliculaFisico, savePeliculaReview } from "./services/movies.service.js"
 import { z } from "zod"
 // Variables de entorno
 dotenv.config()
@@ -22,6 +22,11 @@ app.use(express.json())
 app.use(peliculasRoute)
 app.use(peliculasApiRoute)
 app.use(usuariosApiRoute)
+
+const respuestaMcp = (datos, isError = false) => ({
+    content: [{ type: "text", text: JSON.stringify(datos) }],
+    isError
+})
 
 app.post( "/mcp", async (req, res) => { // Este es el endpoint para que el modelo conozca nuestras herramientas y pueda utilizarlas
     // Voy a definir el servidor MCP y le paso la información de las herramientas que quiero que el modelo conozca
@@ -62,6 +67,110 @@ app.post( "/mcp", async (req, res) => { // Este es el endpoint para que el model
                 }
             } catch (error) {
                 res.status(500).json({error: "Error al obtener las peliculas"})
+            }
+        }
+    )
+
+    server.registerTool(
+        "obtener_pelicula",
+        {
+            description: "Obtiene el detalle de una pelicula por su id",
+            inputSchema: {
+                id: z.string(),
+            }
+        },
+        async ({ id }) => {
+            try {
+                const pelicula = await getPeliculaByTitle(id)
+                if (!pelicula) return respuestaMcp({ error: "La pelicula no existe" }, true)
+                return respuestaMcp(pelicula)
+            } catch (error) {
+                return respuestaMcp({ error: error.message }, true)
+            }
+        }
+    )
+
+    server.registerTool(
+        "crear_pelicula",
+        {
+            description: "Crea una pelicula en la base de datos",
+            inputSchema: {
+                title: z.string().min(3),
+                country: z.string().min(3),
+                language: z.string().min(3),
+                primary_genre: z.string().min(3),
+                production_scale: z.enum(["Commercial", "Independent"]),
+                year: z.string(),
+            }
+        },
+        async (datos) => {
+            try {
+                const pelicula = await guardarPelicula(datos)
+                return respuestaMcp(pelicula)
+            } catch (error) {
+                return respuestaMcp({ error: error.message }, true)
+            }
+        }
+    )
+
+    server.registerTool(
+        "eliminar_pelicula_logico",
+        {
+            description: "Marca una pelicula como eliminada sin borrarla de la base de datos",
+            inputSchema: {
+                id: z.string(),
+            }
+        },
+        async ({ id }) => {
+            try {
+                const pelicula = await eliminarPeliculaLogico(id)
+                if (!pelicula) return respuestaMcp({ error: "La pelicula no existe" }, true)
+                return respuestaMcp(pelicula)
+            } catch (error) {
+                return respuestaMcp({ error: error.message }, true)
+            }
+        }
+    )
+
+    server.registerTool(
+        "eliminar_pelicula_fisico",
+        {
+            description: "Elimina una pelicula de la base de datos de forma definitiva. No se puede deshacer",
+            inputSchema: {
+                id: z.string(),
+            }
+        },
+        async ({ id }) => {
+            try {
+                const pelicula = await eliminarPeliculaFisico(id)
+                if (!pelicula) return respuestaMcp({ error: "La pelicula no existe" }, true)
+                return respuestaMcp(pelicula)
+            } catch (error) {
+                return respuestaMcp({ error: error.message }, true)
+            }
+        }
+    )
+
+    server.registerTool(
+        "agregar_review",
+        {
+            description: "Agrega una reseña de un usuario a una pelicula",
+            inputSchema: {
+                id: z.string(),
+                usuario: z.object({
+                    _id: z.string(),
+                    nombre: z.string().optional(),
+                    email: z.string().optional(),
+                    comentario: z.string().optional(),
+                }),
+            }
+        },
+        async ({ id, usuario }) => {
+            try {
+                const pelicula = await savePeliculaReview(id, usuario)
+                return respuestaMcp(pelicula)
+            } catch (error) {
+                return respuestaMcp({ error: error.message }, true)
             }
         }
     )
