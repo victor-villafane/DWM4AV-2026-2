@@ -1,0 +1,166 @@
+{
+  "info": {
+    "_postman_id": "a6103d50-6b42-40ce-801c-8cfdbb9a5ee3",
+    "name": "peliculas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53370235",
+    "_collection_link": "https://go.postman.co/collection/53370235-a6103d50-6b42-40ce-801c-8cfdbb9a5ee3?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "getPeliculas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:2026/api/peliculas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "2026",
+          "path": [
+            "api",
+            "peliculas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getPeliculaBytitle",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:2026/api/peliculas/Barbie",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "2026",
+          "path": [
+            "api",
+            "peliculas",
+            "Barbie"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "savePelicula",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "   {\r\n        \"title\": \"titulo 2\",\r\n        \"year\": \"123\",\r\n        \"primary_genre\": \"asd\",\r\n        \"country\": \"123\",\r\n        \"language\": \"idioma\",\r\n        \"production_scale\": \"produccion\"\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:2026/api/peliculas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "2026",
+          "path": [
+            "api",
+            "peliculas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deletePelicula",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "   {\r\n        \"title\": \"titulo 2\",\r\n        \"year\": \"123\",\r\n        \"primary_genre\": \"asd\",\r\n        \"country\": \"123\",\r\n        \"language\": \"idioma\",\r\n        \"production_scale\": \"produccion\"\r\n    }"
+        },
+        "url": {
+          "raw": "http://localhost:2026/api/peliculas/titulo 2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "2026",
+          "path": [
+            "api",
+            "peliculas",
+            "titulo 2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "replacePelicula",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "   {\r\n        \"title\": \"titulo 1\",\r\n        \"year\": \"2026\",\r\n        \"primary_genre\": \"asd\",\r\n        \"country\": \"123\",\r\n        \"language\": \"idioma\",\r\n        \"production_scale\": \"produccion\"        \r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:2026/api/peliculas/titulo 1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "2026",
+          "path": [
+            "api",
+            "peliculas",
+            "titulo 1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updatePelicula",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "   {\r\n        \"title\": \"titulo 1\",\r\n        \"year\": \"1990\"    \r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:2026/api/peliculas/titulo 1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "2026",
+          "path": [
+            "api",
+            "peliculas",
+            "titulo 1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
