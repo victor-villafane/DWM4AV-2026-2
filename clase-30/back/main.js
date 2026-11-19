@@ -7,6 +7,7 @@ import dotenv from "dotenv"
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
 import { getPeliculas } from "./services/movies.service.js"
+import { z } from "zod"
 // Variables de entorno
 dotenv.config()
 
@@ -34,13 +35,25 @@ app.post( "/mcp", async (req, res) => { // Este es el endpoint para que el model
     server.registerTool(
         "obtener_peliculas", // Nombre de la herramienta
         {
-            description: "Obtiene todas las peliculas de la base de datos", // Descripción de la herramienta
+            description: "Obtiene las peliculas de la base de datos, con filtros opcionales por idioma, año, titulo y paginacion", // Descripción de la herramienta
+            inputSchema:{
+                language: z.string().optional(),
+                min_year: z.number().int().optional(),
+                max_year: z.number().int().optional(),
+                title: z.string().optional(),
+                page: z.number().int().min(1).optional(),
+                limit: z.number().int().min(1).optional(),
+            }
         },
         async (filtros) => {
             // Esta es la función que se ejecutará cuando el modelo llame a la herramienta
-            // Voy a obtener todas las peliculas de la base de datos
+            // Voy a obtener las peliculas de la base de datos aplicando los filtros recibidos
             try {
-                const peliculas = await getPeliculas()
+                const peliculas = await getPeliculas({
+                    ...filtros,
+                    min_year: filtros.min_year?.toString(),   // year se guarda como string en la base
+                    max_year: filtros.max_year?.toString(),
+                })
                 return {        // Devuelvo las peliculas en formato JSON en el campo content para que el modelo pueda procesarlas
                     content: [{
                         type: "text",
